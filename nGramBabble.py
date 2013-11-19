@@ -2,7 +2,7 @@
 #
 # This is the main function for the Babbler class, using a Babbler,
 # it takes in the ngram number of choice and a filename and outputs
-# 500 words of babble.  Given command line arguments
+# n words of babble, ending in a period.  Given command line arguments
 #
 # $python nGramBabble.py [number] [filename] [length]
 #
