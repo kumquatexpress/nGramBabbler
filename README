@@ -12,3 +12,19 @@ words that the Babbler is generating:
   while [condition]:
        word_list.append(b.generate_next_word(word_list))
   return " ".join(word_list)
+
+
+nGram and nGramReader
+nGram is an object that holds information about a given number of words preceding a word
+mapped to the word and its count in the corpus.  nGramReader reads from a corpus file
+and stores relevant word progression information in a dictionary, which it then stores
+as many nGram objects in a database transaction.
+
+To use, create an nGramReader:
+ 
+  n = nGramReader("test.txt", 2)
+
+where the integer is the number of preceding words to read for each nGram.
+
+Then call n.make_db_transactions() to create nGrams from the dictionary and load them
+into a database (currently sqlite3).

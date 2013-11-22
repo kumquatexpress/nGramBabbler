@@ -15,6 +15,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, mapper
 from sqlalchemy import Table, Column, Integer, String, MetaData
 
+# setup for the ngrams table in sqlite3, runs only if ngrams.db not setup yet
 engine = create_engine('sqlite:///ngrams.db')
 metadata = MetaData()
 ngrams = Table('ngrams', metadata,
@@ -76,6 +77,9 @@ class nGramReader(object):
         self.ngram_size = ngram_count
 
     def make_db_transactions(self):
+        """
+        Creates nGram objects and loads them into the database.
+        """
         session = Session()
         for phrase in self.word_table:
             for word in self.word_table[phrase]:
