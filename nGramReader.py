@@ -11,25 +11,7 @@
 
 import collections
 import nGram as ng
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, mapper
-from sqlalchemy import Table, Column, Integer, String, MetaData
-
-# setup for the ngrams table in sqlite3, runs only if ngrams.db not setup yet
-engine = create_engine('sqlite:///ngrams.db')
-metadata = MetaData()
-ngrams = Table('ngrams', metadata,
-               Column('id', Integer, primary_key=True),
-               Column('prev_words', String),
-               Column('next_word', String),
-               Column('count', Integer),
-               Column('size', Integer)
-               )
-metadata.create_all(engine)
-Session = sessionmaker()
-Session.configure(bind=engine)
-
-mapper(ng.nGram, ngrams)
+import dbConnector as db
 
 
 class nGramReader(object):
@@ -75,12 +57,13 @@ class nGramReader(object):
         self.total_words = totalwords
         self.word_table = word_table
         self.ngram_size = ngram_count
+        self.Session = db.get_session()
 
     def make_db_transactions(self):
         """
         Creates nGram objects and loads them into the database.
         """
-        session = Session()
+        session = self.Session()
         for phrase in self.word_table:
             for word in self.word_table[phrase]:
                 count = self.word_table[phrase][word]
